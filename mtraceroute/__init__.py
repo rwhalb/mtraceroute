@@ -18,6 +18,17 @@ from scapy.sendrecv import sr
 
 
 ##########################
+# Classes From Kamene    #
+##########################
+class RandStringTerm(RandString):
+    def __init__(self, size, term = b''):
+        RandString.__init__(self, size)
+        self.term = term
+    def _fix(self):
+        return RandString._fix(self) + self.term
+
+
+##########################
 # Utilities From Kamene  #
 ##########################
 @conf.commands.register
@@ -46,7 +57,7 @@ class MTR:
         self._ntraces = 1		# Number of trace runs
         self._iface = ''		# Interface to use for trace
         self._gw = ''			# Default Gateway IPv4 Address for trace
-        self._netprotocol = 'TCP'  # MTR network protocol to use for trace
+        self._netprotocol = 'TCP'       # MTR network protocol to use for trace
         self._target = target		# Session targets
         self._exptrg = []		# Expanded Session targets
         self._host2ip = {}		# Target Host Name to IP Address
