@@ -31,10 +31,6 @@ package_data = {
   ],
 }
 
-install_requires = [
-  'scapy', 'netifaces', 'matplotlib'
-]
-
 license = 'GPLv2 License'
 
 long_description = """

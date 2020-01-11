@@ -41,7 +41,6 @@ def main():
     scripts          = release.scripts,
     platforms        = release.platforms,
     classifiers      = release.classifiers,
-    install_requires = release.install_requires,
   )
 #
 #-----------------------------------------------------------------------------
