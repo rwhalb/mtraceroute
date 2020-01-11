@@ -10,7 +10,7 @@ Round Trip Time (RTT) calculations, selection of using
 Network Protocols: TCP, UDP and ICMP and with enhanced scapy
 SVG visual results and session packet capture output.
 
-This library is also used by the Network Security Toolkit (NST).
+This library is also used by the [Network Security Toolkit](https://www.networksecuritytoolkit.org) (NST).
 The NST (Web User Interface) WUI provides key enhancements including
 a GUI options interface, an interactive MTR SVG graphic,
 NST IPv4 Address Tools integration, IPv4 Address Geolocation,
