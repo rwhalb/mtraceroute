@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 #
-# Script: mtr.py (Network Security Toolkit (NST) - Copyright: 2015, 2016, 2018, 2020)
+# Script: mtrrt (Network Security Toolkit (NST) - Copyright: 2015, 2016, 2018, 2020)
 #
 # Description: Helper script to perform a scapy Multi-Traceroute (MTR) with resulting SVG visual.
 
@@ -13,8 +13,8 @@ from mtraceroute import *
 
 def usage():
   version = 1.30
-  print('\n*** The mtraceroute.py script performs a Multi-Traceroute (MTR) using scapy - v{v:.2f} ***\n'.format(v = version))
-  print('mtraceroute.py -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fractional Seconds>]')
+  print('\n*** The mtrrt script performs a Multi-Traceroute (MTR) using scapy - v{v:.2f} ***\n'.format(v = version))
+  print('mtrrt -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fractional Seconds>]')
   print('             [--netproto <Network Protocol>] [--stype <Type> [--sport <Source Port>]]')
   print('             [-p || --dports <Destination Service Ports>]')
   print('             [--minttl <Min TTL>] [--maxttl <Max TTL>] [--gateway <IPv4 Address>]')
@@ -57,7 +57,7 @@ def usage():
   print('* Include internal mtr object variables in output at verbosity level: 8.')
   print('* Include trace packet dump output at verbosity level: 9 (***Warning: A large text output may occur).\n')
   print('*** Example:')
-  print('/usr/share/mtraceroute/mtr.py -t "www.google.com,www.networksecuritytoolkit.org" -r 0 --timeout 3.5 --netproto "TCP" -p "80,443" --minttl 1 --maxttl 20 -q 2 -a "All" --vspread 0.60 --rtt -v 1;\n')
+  print('mtrrt -t "www.google.com,www.networksecuritytoolkit.org" -r 0 --timeout 3.5 --netproto "TCP" -p "80,443" --minttl 1 --maxttl 20 -q 2 -a "All" --vspread 0.60 --rtt -v 1;\n')
 
 def main(argv):
   targets = []
