@@ -11,7 +11,7 @@ import ipaddress
 from scapy.base_classes import Net
 from scapy.plist import SndRcvList
 from scapy.utils import incremental_label, colgen, do_graph
-from scapy.volatile import RandShort, RandInt, IncrementalValue
+from scapy.volatile import RandShort, RandInt, RandString, IncrementalValue
 from scapy.layers.inet import IP, TCP, UDP, ICMP
 from scapy.packet import Raw
 from scapy.sendrecv import sr
