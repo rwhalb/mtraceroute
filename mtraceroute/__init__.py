@@ -338,7 +338,7 @@ class MTR:
         #                   k0       k1   k2       v0   v1           k0         k1    k2       v0   v1
         # Ex: bp = {('192.168.43.48',5555,''): ['T1','T3'], ('192.168.43.48',443,'https'): ['T2','T4']}
         bp = {}				# ep -> A single services label for a given IP
-        for d in self._tlblid:  # k            v0          v1               v2       v3   v4    v5      v6   v7
+        for d in self._tlblid:          #            k             v0          v1               v2       v3   v4    v5      v6   v7
             for k, v in d.items():  # Ex: k:  '162.144.22.87' v: ('T1', '192.168.43.48', '162.144.22.87', 6, 443, 'https', 'SA', '')
                 p = bp.get((v[1], v[4], v[5]))
                 if p == None:
@@ -366,7 +366,6 @@ class MTR:
                 bpip[k[0]].append((tr, p))
             else:
                 bpip[k[0]] = [(tr, p)]
-
         #
         # Create Endpoint Target Clusters...
         epc = {}			# Endpoint Target Cluster Dictionary
@@ -386,7 +385,7 @@ class MTR:
         # Create unique arrays...
         uepip = set(epip)		# Get a unique set of Endpoint IPs
         uepipo = set(oip)		# Get a unique set of Only Endpoint IPs
-        uepprb = set(epprb)		# Get a unique set of Only IPs: Endpoint Target and Probe the same
+        uepprb = set(epprb)		# Get a unique set of Only IPs: Endpoint Target and Probe that are the same
         #
         # Now create unique endpoint target clusters....
         for ep in uepip:
@@ -443,7 +442,6 @@ class MTR:
             #
             # Store Endpoint Cluster...
             epc[ep] = ecs
-
         #
         # Create ASN Clusters (i.e. DOT subgraph and nodes)
         s += "\n\t### ASN Clusters ###\n"
@@ -523,7 +521,6 @@ class MTR:
                     if k != h:		    # this Endpoint target to the Probe Target Cluster below.
                         s += epc[ip]	    # Finally add the Endpoint Cluster if Stand-alone and
                                             # not running the mtr session.
-
         #
         # Probe Target Cluster...
         s += "\n\t### Probe Target Cluster ###\n"
@@ -586,7 +583,6 @@ class MTR:
                 if k == h:		# this Endpoint target to the Probe Target Cluster.
                     s += epc[ip]
         s += "\t}\n"
-
         #
         # Default Gateway Cluster...
         s += "\n\t### Default Gateway Cluster ###\n"
@@ -605,7 +601,6 @@ class MTR:
                     s += '\t\tlabel=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" ALIGN="center"><TR><TD><B><FONT POINT-SIZE="9">Default Gateway</FONT></B></TD></TR></TABLE>>;\n'
                     s += '\t\t"{gw:s}" [shape="diamond",fontname="Sans-Serif",fontsize=11,color="black",gradientangle=270,fillcolor="white:goldenrod",style="rounded,filled",tooltip="Default Gateway Host: {gw:s}"];\n'.format(gw=self._gw)
                     s += "\t}\n"
-
         #
         # Build Begin Point strings...
         # Ex bps = '192.168.43.48" [shape="record",color="black",gradientangle=270,fillcolor="white:darkorange",style="filled",'
@@ -631,7 +626,6 @@ class MTR:
             else:
                 bps2 = 'label="Probe: {ip:s}|{tr:s}",tooltip="Begin Host Probe: {ip:s}"];\n'.format(ip=k, tr=tr)
             s += bps1 + bps2
-
         #
         s += "\n\t### Target Endpoints ###\n"
         #
@@ -720,7 +714,6 @@ class MTR:
                             lb = 'label=<{lh:s}<BR/><FONT POINT-SIZE="8">Failed Target</FONT>>'.format(lh=bhh)
                             s += '\t"{bh:s}" [{l:s},shape="doubleoctagon",color="black",gradientangle=270,fillcolor="white:red",style="filled,rounded",tooltip="Failed MTR Resolved Target: {b:s}"];\n'.format(bh=nd, l=lb, b=v[2])
                             bhhops.append(bhh)
-
         #
         # ICMP Destination Unreachable Hops...
         s += "\n\t### ICMP Destination Unreachable Hops ###\n"
@@ -775,7 +768,6 @@ class MTR:
             for sr in pad:
                 lb = 'label=<<BR/>{r:s}<BR/><FONT POINT-SIZE="8">Padding</FONT>>'.format(r=sr)
                 s += '\t"{r:s}" [{l:s},shape="box3d",color="black",gradientangle=270,fillcolor="white:red",style="filled,rounded"];\n'.format(r=sr, l=lb)
-
         #
         # Draw each trace (i.e., DOT edge) for each number of queries...
         s += "\n\t### Traces ###\n"
@@ -833,6 +825,12 @@ class MTR:
                 #
                 # Enhance target Endpoint (i.e., End of a trace) replacement...
                 for k, v in self._tlblid[t].items():
+                    #
+                    # 01-12-2020: Limit test for max index (Fix for ISP Verizon FIOS TTL manipulation with ICMP packets)
+                    maxtk = max(tk)
+                    if maxtk not in self._rtt[t + 1]:
+                        maxtk -= 1                  # Reduce max index by one
+                    ###############
                     if v[6] == 'BH':		    # Blackhole detection - do not create Enhanced Endpoint
                         #
                         # Check for Last Hop / Backhole (Failed Target) match:
@@ -858,10 +856,10 @@ class MTR:
                                 #
                                 # Last hop is an ICMP packet from target and was reached...
                                 lb = 'Trace: {tr:d}:{tn:d}, {lbp:s} -> {lbn:s}'.format(tr=(t + 1), tn=max(tk), lbp=ntr.replace('"', ''), lbn=k)
-                                lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=lh, rtt=self._rtt[t + 1][max(tk)])
+                                lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=lh, rtt=self._rtt[t + 1][maxtk])
                                 if rtt:
-                                    llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=k, rtt=self._rtt[t + 1][max(tk)])
-                                    s += '"{bh:s} {bhp:d}/{bht:s}" [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(bh=k, bhp=v[4], bht=v[3], rtt=self._rtt[t + 1][max(tk)], lb=lb, llb=llb)
+                                    llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=k, rtt=self._rtt[t + 1][maxtk])
+                                    s += '"{bh:s} {bhp:d}/{bht:s}" [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(bh=k, bhp=v[4], bht=v[3], rtt=self._rtt[t + 1][maxtk], lb=lb, llb=llb)
                                 else:
                                     s += '"{bh:s} {bhp:d}/{bht:s}" [style="solid",edgetooltip="{lb:s}"];\n'.format(bh=k, bhp=v[4], bht=v[3], lb=lb)
                             else:
@@ -880,10 +878,10 @@ class MTR:
                             if len(trace) > 1:
                                 s += '\t{ptr:s} -> '.format(ptr=ntr)
                                 lb = 'Trace: {tr:d}:{tn:d}, {lbp:s} -> {lbn:s}'.format(tr=(t + 1), tn=max(tk), lbp=ntr.replace('"', ''), lbn=lh)
-                                lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=lh, rtt=self._rtt[t + 1][max(tk)])
-                                llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=lh, rtt=self._rtt[t + 1][max(tk)])
+                                lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=lh, rtt=self._rtt[t + 1][maxtk])
+                                llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=lh, rtt=self._rtt[t + 1][maxtk])
                                 if rtt:
-                                    s += '"{lh:s} 3/icmp" [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(lh=lh, rtt=self._rtt[t + 1][max(tk)], lb=lb, llb=llb)
+                                    s += '"{lh:s} 3/icmp" [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(lh=lh, rtt=self._rtt[t + 1][maxtk], lb=lb, llb=llb)
                                 else:
                                     s += '"{lh:s} 3/icmp" [style="solid",edgetooltip="{lb:s} 3/icmp",labeltooltip="{llb:s}"];\n'.format(lh=lh, lb=lb, llb=llb)
                                 #
@@ -899,32 +897,30 @@ class MTR:
                             s += '\t{ptr:s} -> '.format(ptr=ntr)
                         lb = 'Trace: {tr:d}:{tn:d}, {lbp:s} -> {lbn:s}'.format(tr=(t + 1), tn=max(tk), lbp=ntr.replace('"', ''), lbn=k)
                         if not 'Unk' in k:
-                            lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=k, rtt=self._rtt[t + 1][max(tk)])
+                            lb += ' (RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms))'.format(prb=v[1], lbn=k, rtt=self._rtt[t + 1][maxtk])
                         pre = ''
                         if k in uepprb:		# Special Case: Distinguish the Endpoint Target from Probe
                             pre = '_'		# when they are the same using the underscore char: '_'.
                         if rtt:
                             if not 'Unk' in k:
-                                llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=k, rtt=self._rtt[t + 1][max(tk)])
+                                llb = 'Trace: {tr:d}:{tn:d}, RTT: {prb:s} <-> {lbn:s} ({rtt:s}ms)'.format(tr=(t + 1), tn=max(tk), prb=v[1], lbn=k, rtt=self._rtt[t + 1][maxtk])
                                 #
                                 # Check to remove label clashing...
                                 ntrs = ntr.replace('"', '')		# Remove surrounding double quotes ("")
                                 if ntrs == k:
-                                    s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",xlabel=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,forcelabel=True,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], rtt=self._rtt[t + 1][max(tk)], lb=lb, llb=llb)
+                                    s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",xlabel=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,forcelabel=True,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], rtt=self._rtt[t + 1][maxtk], lb=lb, llb=llb)
                                 else:
-                                    s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], rtt=self._rtt[t + 1][max(tk)], lb=lb, llb=llb)
+                                    s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",label=<<FONT POINT-SIZE="8">&nbsp; {rtt:s}ms</FONT>>,edgetooltip="{lb:s}",labeltooltip="{llb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], rtt=self._rtt[t + 1][maxtk], lb=lb, llb=llb)
                             else:
                                 s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",edgetooltip="{lb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], lb=lb)
                         else:
                             s += '"{pre:s}{ep:s}":E{tr:s}:n [style="solid",edgetooltip="{lb:s}"];\n'.format(pre=pre, ep=k, tr=v[0], lb=lb)
                 t += 1				# Next trace out of total traces
-
         #
         # Decorate Unknown ('Unkn') Nodes...
         s += "\n\t### Decoration For Unknown (Unkn) Node Hops ###\n"
         for u in self._unks:
             s += '\t{u:s} [tooltip="Trace: {t:s}, Unknown Hop: {u2:s}",shape="egg",fontname="Sans-Serif",fontsize=9,height=0.2,width=0.2,color="black",gradientangle=270,fillcolor="white:#d8d8d8",style="filled"];\n'.format(u=u, t=self._unks[u][2], u2=u.replace('"', ''))
-
         #
         # Create tooltip for standalone nodes...
         s += "\n\t### Tooltip for Standalone Node Hops ###\n"
@@ -955,15 +951,16 @@ class MTR:
         ASres = AS_resolver() : default whois AS resolver (riswhois.ripe.net)
         ASres = AS_resolver_cymru(): use whois.cymru.com whois database
         ASres = AS_resolver(server="whois.ra.net")
-        padding: Show packets with padding as a red 3D-Box.
-        vspread: Vertical separation between nodes on graph.
-        title: Title text for the rendering graphic.
+
+          padding: Show packets with padding as a red 3D-Box.
+          vspread: Vertical separation between nodes on graph.
+            title: Title text for the rendering graphic.
         timestamp: Title Time Stamp text to appear below the Title text.
-        rtt: Display Round-Trip Times (msec) for Hops along trace edges.
-        format: Output type (svg, ps, gif, jpg, etc.), passed to dot's "-T" option.
-        figsize: w,h tuple in inches. See matplotlib documentation.
-        target: filename. If None, uses matplotlib to display.
-        prog: Which graphviz program to use."""
+              rtt: Display Round-Trip Times (msec) for Hops along trace edges.
+           format: Output type (svg, ps, gif, jpg, etc.), passed to dot's "-T" option.
+          figsize: w,h tuple in inches. See matplotlib documentation.
+           target: Filename or redirect.
+             prog: Which graphviz program to use."""
         if self._asres is None:
             self._asres = conf.AS_resolver
         if (self._graphdef is None or		# Remake the graph if there are any changes
@@ -1104,7 +1101,7 @@ class MTracerouteResult(SndRcvList):
         for rttk in rtt:
             tcnt += 1
             trtt[tcnt] = rtt[rttk]
-            mtrc._rtt.update(trtt)  # Update Round Trip Times for Trace Nodes
+            mtrc._rtt.update(trtt)             # Update Round Trip Times for Trace Nodes
         #
         # Update the Target Trace Label IDs and Blackhole (Failed Target) detection...
         #
@@ -1178,7 +1175,11 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
            privaddr: 0 - Default: Normal display of all resolved AS numbers.
                      1 - Do not show an associated AS Number bound box (cluster) on graph for a private IPv4 Address.
                rasn: 0 - Do not resolve AS Numbers - No graph clustering.
-                     1 - Default: Resolve all AS numbers."""
+                     1 - Default: Resolve all AS numbers.
+             retry: If positive, how many times to resend unanswered packets
+                    if negative, how many times to retry when no more packets
+                    are answered.
+           timeout: How much time to wait after the last packet has been sent."""
     #
     # Initialize vars...
     trace = []			# Individual trace array
@@ -1265,8 +1266,8 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
     if l4 is None:
         #
         # Standard Layer: 3 ('TCP', 'UDP' or 'ICMP') tracing...
-        for n in range(0, nquery):
-            for t in exptrg:
+        for n in range(0, nquery):                              # Iterate: Number of queries
+            for t in exptrg:                                    # Iterate: Number of expanded targets
                 #
                 # Execute a traceroute based on network protocol setting...
                 if netproto == "ICMP":
@@ -1393,7 +1394,6 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                     trace[ntraces].show(ntrace=(ntraces + 1))
                     print()
                 ntraces += 1
-
     #
     # Store total trace run count...
     mtrc._ntraces = ntraces
