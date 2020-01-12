@@ -1,7 +1,7 @@
 # mtraceroute
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
 ![Release: 1.30](https://img.shields.io/badge/Release-1.30-blue)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](LICENSE)
 ---
 A python3 library for performing an enhanced scapy Multi-Traceroute (MTR)
 with resulting SVG visual.
