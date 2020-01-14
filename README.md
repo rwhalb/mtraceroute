@@ -26,8 +26,8 @@ and SVG Graphic image conversion.
 
 ## Example Runs
 ### Simple Run
-A single TCP trace route to *www.google.com*. This run creates 
-a resultant SVG trace route graphic and packet capture.
+A single TCP trace route from private host: 10.222.222.10 to [www.google.com](https://www.google.com) port: https (443).
+This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
 
 ```
 mtrrt \
