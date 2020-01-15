@@ -23,10 +23,73 @@ and SVG Graphic image conversion.
 
 
 ## Requirements
+* python3: netifaces
+* python3: pygraphviz
+* python3: scapy
+* application: graphviz
+
+## Usage ##
+Use the python3 control script: "mtrrt" to help facilitate the creation of a
+Multi-Traceroute (MTR) session.
+
+```
+mtrrt --help
+
+*** The mtrrt script performs a Multi-Traceroute (MTR) using scapy - v1.30.1 ***
+
+mtrrt -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fractional Seconds>]
+             [--netproto <Network Protocol>] [--stype <Type> [--sport <Source Port>]]
+             [-p || --dports <Destination Service Ports>]
+             [--minttl <Min TTL>] [--maxttl <Max TTL>] [--gateway <IPv4 Address>]
+             [-g || --graphic <Graphic Type>] [-s || --showpadding] [--privaddr] [--dotfile]
+             [-f || --dirfile <SVG Directory File Name>] -i | --interface <Interface Name> [--l3rawsocket]
+             [--ptype <Type> [--payload <Payload>]]
+             [-q || --nquery <Query Trace Count>] [-w || --wrpcap <pcap Directory File Name>]
+             [-a || --asnresolver <ASN Resolver>] [ --vspread <Vertical Node Separation>] [--rtt]
+             [--title <Title Text>] [--ts <Title Time Stamp>] [-v || --verbose <level>] [-h || --help]
+
+* Where <Target Host List> and <Destination Ports> are a comma separated string.
+* Use the (--netproto) option to specify the MTR Network Protocol (Must be one of: "TCP" (Default), "UDP", or "ICMP").
+* Use the (--stype) option to choose the source port type: "Random" (Default) or "Increment".
+* Use the (--sport) option to specify a source port (Default: 50000) for source port type: "Increment".
+  If the source port type: "--stype Increment" is used, then the source port will be increased by one (1) for
+  each packet sent out during an MTR session.
+* Use the (--ptype) option to choose the a packet payload type: "Disabled" (TCP Default) "RandStrTerm" (UDP Default),
+ "RandStr" (ICMP Default), "ASCII" or "ASCII-Hex".
+* Use the (--payload) option for a ASCII string value (e.g., 'Data1: 56\n') for ptype: "ASCII".
+* Use the (--payload) option for a ASCII-Hex string value (e.g., '01fe44fFEf') for ptype: "ASCII-Hex".
+  The "--payload ASCII-Hex" option must use 2 ASCII characters to represent one Hexadecimal byte: "f" => "0F" or "0f".
+* To add additional TCP destination service ports for tracerouting: "80,443" (Default: "80").
+* Use the (-s || --showpadding) to display packets with padding as red triangles.
+* The (-a || --asnresolver) option can be: "Disabled", "All", "whois.cymru.com", "riswhois.ripe.net" or "whois.ra.net".
+* Use the (--privaddr) option to disable showing an associated AS Number bound box (cluster)
+  on the Multi-Traceroute graph for a private IPv4 Address.
+* Use the (--timeout) option to limit the time waiting for a Hop packet response (Default: 2.0 seconds).
+* Use the (-q || --nquery) count for the number of traces to perform per service target (Default: 1).
+* The default graphic type is an SVG graphic: "svg".
+* The default directory file name for the resulting mtr graphic: "/tmp/graph.svg".
+* Use the (-f || --dirfile) option to change the resulting output directory:
+  Example: "-f /var/nst/wuiout/scapy/graph.svg" - Output directory: "/var/nst/wuiout/scapy".
+* The default Network Interface will be used to send out the traceroute unless the (-i || --interface) option is used.
+* Use the (--gateway) option to override the detected gateway address.
+* Increase the verbosity output with a level of 1 or more (Default: 0).
+* Use the (--dotfile) option to dump the mtr DOT graph object to a file (.dot file) in the output directory.
+* Use the (--vspread) option to set the Vertical Separation in inches between nodes (Default: 0.75in).
+* Use the (--rtt) option to display Round-Trip Times (msec) on the graphic for each Hop along a Traceroute.
+* Use the (--title) option to override the default Title value: "Multi-Traceroute (MTR) Probe".
+* Use the (--ts) option to include the Title Time Stamp text below the Title Text.
+* Include internal mtr object variables in output at verbosity level: 8.
+* Include trace packet dump output at verbosity level: 9 (***Warning: A large text output may occur).
+
+*** Example:
+mtrrt -t "www.google.com,www.networksecuritytoolkit.org" -r 0 --timeout 3.5 --netproto "TCP" -p "80,443" --minttl 1 --maxttl 20 -q 2 -a "All" --vspread 0.60 --rtt -v 1;
+```
 
 ## Example Runs
+Shown are 2 use cases: A simple one and a more complex trace route.
+ 
 ### Simple Run
-A single TCP trace route from private host: 10.222.222.10 to [www.google.com](https://www.google.com) port: https (443).
+A single TCP trace route from private host: 10.222.222.10 to target: [www.google.com](https://www.google.com) port: https (443).
 This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
 
 ```
@@ -40,4 +103,20 @@ mtrrt \
 ```
 
 ![Simple Run](example_runs/scapy-mtr_2020-01-14_08-29-39.svg)
+
+### Complex Run
+A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443).
+This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
+
+```
+mtrrt \
+--targets 'www.google.com,openwrt.org' \
+ --dirfile '/tmp/scapy-mtr_2020-01-15_09-11-39.svg' --nquery 3 --interface 'lan0' \
+ --netproto 'TCP' --dports '80,443' --wrpcap '/tmp/scapy-mtr_2020-01-15_09-11-39.pcap' \
+ --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
+ --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
+ --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-15 09:11:39' --timeout 2;
+```
+
+![Complex Run](example_runs/scapy-mtr_2020-01-15_09-11-39.svg)
 ---
