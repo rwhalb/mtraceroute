@@ -95,8 +95,8 @@ This run creates a resultant SVG trace route graphic and packet capture in direc
 ```
 mtrrt \
  --targets 'www.google.com' \
- --dirfile '/tmp/scapy-mtr_2020-01-14_08-12-40.svg' --nquery 1 --interface 'lan0' \
- --netproto 'TCP' --dports '443' --wrpcap '/tmp/mtraceroute/scapy-mtr_2020-01-14_08-12-40.pcap' \
+ --dirfile '/tmp/scapy-mtr_2020-01-21_07-11-23.svg' --nquery 1 --interface 'lan0' \
+ --netproto 'TCP' --dports '443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-11-23.pcap' \
  --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
  --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-14 08:12:40' --timeout 2
@@ -108,11 +108,13 @@ mtrrt \
 A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443).
 This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
 
+**Note: To zoom in on the graphic below just open the image in a new tab.** 
+
 ```
 mtrrt \
 --targets 'www.google.com,openwrt.org' \
- --dirfile '/tmp/scapy-mtr_2020-01-15_09-11-39.svg' --nquery 3 --interface 'lan0' \
- --netproto 'TCP' --dports '80,443' --wrpcap '/tmp/scapy-mtr_2020-01-15_09-11-39.pcap' \
+ --dirfile '/tmp/scapy-mtr_2020-01-21_07-20-06.svg' --nquery 3 --interface 'lan0' \
+ --netproto 'TCP' --dports '80,443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-20-06.pcap' \
  --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
  --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-15 09:11:39' --timeout 2;
