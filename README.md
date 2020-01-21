@@ -99,7 +99,7 @@ mtrrt \
  --netproto 'TCP' --dports '443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-11-23.pcap' \
  --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
  --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
- --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-14 08:12:40' --timeout 2
+ --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-21 07:11:23' --timeout 2
 ```
 
 ![Simple Run](example_runs/scapy-mtr_2020-01-21_07-11-23.svg)
@@ -108,7 +108,7 @@ mtrrt \
 A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443).
 This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
 
-**Note: To zoom in on the graphic below just open the image in a new tab.** 
+__Note: To zoom in on the graphic below just open the image in a new tab.__ 
 
 ```
 mtrrt \
@@ -117,7 +117,7 @@ mtrrt \
  --netproto 'TCP' --dports '80,443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-20-06.pcap' \
  --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
  --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
- --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-15 09:11:39' --timeout 2;
+ --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-21 07:20:06' --timeout 2;
 ```
 
 ![Complex Run](example_runs/scapy-mtr_2020-01-21_07-20-06.svg)
