@@ -102,7 +102,7 @@ mtrrt \
  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-14 08:12:40' --timeout 2
 ```
 
-![Simple Run](example_runs/scapy-mtr_2020-01-14_08-29-39.svg)
+![Simple Run](example_runs/scapy-mtr_2020-01-21_07-11-23.svg)
 
 ### Complex Run
 A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443).
@@ -118,5 +118,5 @@ mtrrt \
  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-15 09:11:39' --timeout 2;
 ```
 
-![Complex Run](example_runs/scapy-mtr_2020-01-15_09-11-39.svg)
+![Complex Run](example_runs/scapy-mtr_2020-01-21_07-20-06.svg)
 ---
