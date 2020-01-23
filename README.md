@@ -2,7 +2,7 @@
 
 ![Release: 1.30.1](https://img.shields.io/badge/Release-1.30.1-blue) ![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg) ![Python3.7](https://img.shields.io/badge/Python-3.7-blue.svg)
 ---
-A python3 library for performing an enhanced scapy Multi-Traceroute (MTR)
+A python3 library for performing an enhanced [scapy](https://github.com/secdev/scapy) Multi-Traceroute (MTR)
 with resulting SVG visual.
 
 Features include running multiple queries with each target, display of
