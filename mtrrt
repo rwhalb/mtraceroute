@@ -365,20 +365,28 @@ def main(argv):
       # Dump a scapy create pcap file...
       if (verboselvl >= 1):
         print('\nNow dumping and time sorting the traces to pcap file: "{pc:s}"'.format(pc = pcapdirfilename))
-      spkts = []
-      rpkts = []
-      pkts = []
-      for ans in mtrc._res:					# Dump all completed send/received packets
-        spkts += [t[0] for t in ans]
-        rpkts += [t[1] for t in ans]
+      #                          
+      # To debug with pudb (RPM: python3-pudb) insert: import pudb; pudb.set_trace()
+      spkts = []                            # Sent packets
+      rpkts = []                            # Receive packets
+      upkts = []                            # Unanswered packets
+      pkts = []                             # All packets
+      for ans in mtrc._res:                 # Dump all completed send/received packets
+        spkts += [s[0] for s in ans]
+        rpkts += [r[1] for r in ans]
       for sp in spkts:
-        sp.time = sp.sent_time                                  # Get packet sent time
+        if hasattr(sp, "sent_time") and isinstance(sp.sent_time, float):
+          sp.time = sp.sent_time            # Get packet sent time (i.e., A sent answered packet)
       pkts = spkts + rpkts
-      for uans in mtrc._ures:					# Dump all unanswered packets
-        pkts += [t[0] for t in uans]
-      wrpcap(tmppcapfile, pkts)
+      for uans in mtrc._ures:               # Dump all unanswered packets
+        upkts += [u[0] for u in uans]
+      for up in upkts:
+        if hasattr(up, "sent_time") and isinstance(up.sent_time, float):
+          up.time = up.sent_time            # Get packet sent time (i.e., A sent unanswered packet)
+      pkts += upkts
+      wrpcap(tmppcapfile, pkts)             # Dump and create pcap file
       #
-      # Order packets by their timestamp...
+      # Reorder packets by their timestamp...
       vf = "&> /dev/null"
       if (verboselvl >= 8):
         vf = ""
