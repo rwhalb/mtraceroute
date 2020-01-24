@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -s
 
 #
 # Script: mtrrt (Network Security Toolkit (NST) - Copyright: 2015, 2016, 2018, 2020)
@@ -365,9 +365,15 @@ def main(argv):
       # Dump a scapy create pcap file...
       if (verboselvl >= 1):
         print('\nNow dumping and time sorting the traces to pcap file: "{pc:s}"'.format(pc = pcapdirfilename))
+      spkts = []
+      rpkts = []
       pkts = []
       for ans in mtrc._res:					# Dump all completed send/received packets
-        pkts += [t[0] for t in ans] + [t[1] for t in ans]
+        spkts += [t[0] for t in ans]
+        rpkts += [t[1] for t in ans]
+      for sp in spkts:
+        sp.time = sp.sent_time                                  # Get packet sent time
+      pkts = spkts + rpkts
       for uans in mtrc._ures:					# Dump all unanswered packets
         pkts += [t[0] for t in uans]
       wrpcap(tmppcapfile, pkts)
