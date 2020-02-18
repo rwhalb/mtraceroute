@@ -24,7 +24,7 @@ def usage():
   print('             [-q || --nquery <Query Trace Count>] [-w || --wrpcap <pcap Directory File Name>]')
   print('             [-a || --asnresolver <ASN Resolver>] [ --vspread <Vertical Node Separation>] [--rtt]')
   print('             [--title <Title Text>] [--ts <Title Time Stamp>] [-v || --verbose <level>] [-h || --help]\n')
-  print('* Where <Target Host List> and <Destination Ports> are a comma separated string. The <Target Host List> can be in CIDR notation.')
+  print('* Where <Target Host List> and <Destination Ports> are a comma separated string. The <Target Host List> can be in CIDR notation format.')
   print('* Use the (--netproto) option to specify the MTR Network Protocol (Must be one of: "TCP" (Default), "UDP", or "ICMP").')
   print('* Use the (--stype) option to choose the source port type: "Random" (Default) or "Increment".')
   print('* Use the (--sport) option to specify a source port (Default: 50000) for source port type: "Increment".')
