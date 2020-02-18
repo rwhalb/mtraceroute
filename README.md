@@ -35,7 +35,7 @@ Multi-Traceroute (MTR) session.
 ```
 mtrrt --help
 
-*** The mtrrt script performs a Multi-Traceroute (MTR) using scapy - v1.30.1 ***
+*** The mtrrt script performs a Multi-Traceroute (MTR) using scapy - v1.30.2 ***
 
 mtrrt -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fractional Seconds>]
              [--netproto <Network Protocol>] [--stype <Type> [--sport <Source Port>]]
@@ -48,7 +48,7 @@ mtrrt -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fra
              [-a || --asnresolver <ASN Resolver>] [ --vspread <Vertical Node Separation>] [--rtt]
              [--title <Title Text>] [--ts <Title Time Stamp>] [-v || --verbose <level>] [-h || --help]
 
-* Where <Target Host List> and <Destination Ports> are a comma separated string.
+* Where <Target Host List> and <Destination Ports> are a comma separated string. The <Target Host List> can be in CIDR notation.
 * Use the (--netproto) option to specify the MTR Network Protocol (Must be one of: "TCP" (Default), "UDP", or "ICMP").
 * Use the (--stype) option to choose the source port type: "Random" (Default) or "Increment".
 * Use the (--sport) option to specify a source port (Default: 50000) for source port type: "Increment".
