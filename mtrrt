@@ -12,7 +12,7 @@ from scapy.all import *
 from mtraceroute import *
 
 def usage():
-  version = "1.30.1"
+  version = "1.30.2"
   print('\n*** The mtrrt script performs a Multi-Traceroute (MTR) using scapy - v{v:s} ***\n'.format(v = version))
   print('mtrrt -t || --targets <Target Host List> [-r || --retry <Retry>] [--timeout <Fractional Seconds>]')
   print('             [--netproto <Network Protocol>] [--stype <Type> [--sport <Source Port>]]')

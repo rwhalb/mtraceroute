@@ -198,23 +198,21 @@ class MTR:
         for ip, asn, desc, in asnlist:
             if asn is None:
                 continue
-            iplist = self._asns.get(asn, [])  # Get previous ASN value
-            iplist.append(ip)	              # Append IP Address to previous ASN
-
             #
             # If ASN is a string Convert to a number: (i.e., 'AS3257' => 3257)
             if type(asn) == str:
                 asn = asn.upper()
-                asn = asn.replace('AS', '')
-                try:
-                    asn = int(asn)
-                    self._asns[asn] = iplist
-                    self._asds[asn] = desc
-                except:
-                    continue
+                nasn = asn.replace('AS', '')
             else:
-                self._asns[asn] = iplist
-                self._asds[asn] = desc
+                nasn = asn
+            try:                                    # Make sure a number
+                nasn = int(nasn)
+            except:
+                continue
+            iplist = self._asns.get(nasn, [])       # Get previous ASN value
+            iplist.append(ip)                       # Append IP Address to previous ASN
+            self._asns[nasn] = iplist               # Store updated IP list
+            self._asds[nasn] = desc                 # Append AS description
 
     #
     #  Get the ASN for a given IP Address.
