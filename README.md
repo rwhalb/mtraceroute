@@ -94,31 +94,49 @@ This run creates a resultant SVG trace route graphic and packet capture in direc
 
 ```
 mtrrt \
- --targets 'www.google.com' \
- --dirfile '/tmp/scapy-mtr_2020-01-21_07-11-23.svg' --nquery 1 --interface 'lan0' \
- --netproto 'TCP' --dports '443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-11-23.pcap' \
- --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
- --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
- --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-21 07:11:23' --timeout 2
+  --targets 'www.google.com' \
+  --dirfile '/tmp/scapy-mtr_2020-02-18_16-12-39.svg' --nquery 1 --interface 'lan0' \
+  --netproto 'TCP' --dports '443' --wrpcap '/tmp/scapy-mtr_2020-02-18_16-12-39.pcap' \
+  --retry 0 --minttl 3 --maxttl 16 --asnresolver 'All' --verbose 1 \
+  --stype 'Random' --dotfile --rtt --privaddr --ptype 'Disabled' \
+  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-02-18 16:12:39' --timeout 2 2>&1;
 ```
 
-![Simple Run](example_runs/scapy-mtr_2020-01-21_07-11-23.svg)
+![Simple Run](example_runs/scapy-mtr_2020-02-18_16-12-39.svg)
 
 ### Complex Run
-A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443).
+A more complex TCP trace route from private host: 10.222.222.10 to targets: [www.google.com](https://www.google.com), [openwrt.org](https://openwrt.org) ports: http (80), https (443). Packets returned with padding are also shown.
 This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
 
 __Note: To zoom in on the graphic below just open the image in a new tab.__ 
 
 ```
 mtrrt \
---targets 'www.google.com,openwrt.org' \
- --dirfile '/tmp/scapy-mtr_2020-01-21_07-20-06.svg' --nquery 3 --interface 'lan0' \
- --netproto 'TCP' --dports '80,443' --wrpcap '/tmp/scapy-mtr_2020-01-21_07-20-06.pcap' \
- --retry 0 --minttl 1 --maxttl 30 --asnresolver 'All' --verbose 1 \
- --stype 'Random' --dotfile --rtt --privaddr --ptype "Disabled" \
- --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-01-21 07:20:06' --timeout 2;
+  --targets 'www.google.com,openwrt.org' \
+  --dirfile '/tmp/scapy-mtr_2020-02-18_16-22-51.svg' --nquery 3 --interface 'lan0' \
+  --netproto 'TCP' --dports '80, 443' --wrpcap '/tmp/scapy-mtr_2020-02-18_16-22-51.pcap' \
+  --retry 0 --minttl 3 --maxttl 30 --asnresolver 'All' --verbose 1 \
+  --stype 'Random' --dotfile --showpadding --rtt --privaddr --ptype 'Disabled' \
+  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-02-18 16:22:51' --timeout 2 2>&1;
 ```
 
-![Complex Run](example_runs/scapy-mtr_2020-01-21_07-20-06.svg)
+![Complex Run](example_runs/scapy-mtr_2020-02-18_16-22-51.svg)
+
+### CIDR Run
+A TCP trace route from private host: 10.222.222.10 to [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) targets: [www.google.com/30](https://www.google.com) port: https (443). The use of a CIDR address notation can expose load balancing tiers.
+This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
+
+__Note: To zoom in on the graphic below just open the image in a new tab.__ 
+
+```
+mtrrt \
+  --targets 'www.google.com/30' \
+  --dirfile '/tmp/scapy-mtr_2020-02-18_16-30-10.svg' --nquery 3 --interface 'lan0' \
+  --netproto 'TCP' --dports '443' --wrpcap '/tmp/scapy-mtr_2020-02-18_16-30-10.pcap' \
+  --retry 0 --minttl 3 --maxttl 30 --asnresolver 'All' --verbose 1 \
+  --stype 'Random' --dotfile --rtt --privaddr --ptype 'Disabled' \
+  --vspread 0.75 --title 'Multi-Traceroute (MTR) Probe' --ts '2020-02-18 16:30:10' --timeout 2 2>&1;
+```
+
+![Complex Run](example_runs/scapy-mtr_2020-02-18_16-30-10.svg)
 ---
