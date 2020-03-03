@@ -86,7 +86,7 @@ mtrrt -t "www.google.com,www.networksecuritytoolkit.org" -r 0 --timeout 3.5 --ne
 ```
 
 ## Example Runs
-Shown are 2 use cases: A simple one and a more complex trace route.
+Shown are 3 use cases: A simple one, one more complex and a CIDR trace route.
  
 ### Simple Run
 A single TCP trace route from private host: 10.222.222.10 to target: [www.google.com](https://www.google.com) port: https (443).
