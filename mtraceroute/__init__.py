@@ -9,6 +9,7 @@
 ##########################
 import ipaddress
 from scapy.base_classes import Net
+from scapy.config import conf
 from scapy.plist import SndRcvList
 from scapy.utils import incremental_label, colgen, do_graph
 from scapy.volatile import RandShort, RandInt, RandString, IncrementalValue
