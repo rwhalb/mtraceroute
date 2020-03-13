@@ -8,6 +8,7 @@
 # Required Imports       #
 ##########################
 import ipaddress
+import re
 from scapy.base_classes import Net
 from scapy.config import conf
 from scapy.plist import SndRcvList
