@@ -14,6 +14,7 @@ from scapy.plist import SndRcvList
 from scapy.utils import incremental_label, colgen, do_graph
 from scapy.volatile import RandShort, RandInt, RandString, IncrementalValue
 from scapy.layers.inet import IP, TCP, UDP, ICMP
+from scapy.layers.inet6 import IPv6, ICMPv6TimeExceeded
 from scapy.packet import Raw
 from scapy.sendrecv import sr
 import time
@@ -1001,8 +1002,8 @@ class MTracerouteResult(SndRcvList):
             #
             # Responses found...
             for s, r in self.res:
-                s = s.getlayer(IP) or (conf.ipv6_enabled and s[scapy.layers.inet6.IPv6]) or s
-                r = r.getlayer(IP) or (conf.ipv6_enabled and r[scapy.layers.inet6.IPv6]) or r
+                s = s.getlayer(IP) or (conf.ipv6_enabled and s[IPv6]) or s
+                r = r.getlayer(IP) or (conf.ipv6_enabled and r[IPv6]) or r
                 #
                 # Make sure 'r.src' is an IP Address (e.g., Case where r.src = '24.97.150.188 80/tcp')
                 rs = r.src.split()
@@ -1016,10 +1017,10 @@ class MTracerouteResult(SndRcvList):
                 else:
                     trace_id = (s.src, s.dst, s.proto, 0)
                 trace = rt.get(trace_id, {})
-                ttl = conf.ipv6_enabled and scapy.layers.inet6.IPv6 in s and s.hlim or s.ttl
+                ttl = conf.ipv6_enabled and IPv6 in s and s.hlim or s.ttl
                 #
                 # Check for packet response types:
-                if not (ICMP in r and r[ICMP].type == 11) and not (conf.ipv6_enabled and scapy.layers.inet6.IPv6 in r and scapy.layers.inet6.ICMPv6TimeExceeded in r):
+                if not (ICMP in r and r[ICMP].type == 11) and not (conf.ipv6_enabled and IPv6 in r and ICMPv6TimeExceeded in r):
                     #
                     # Mostly: Process target reached or ICMP Unreachable...
                     if trace_id in portsdone:
