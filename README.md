@@ -19,7 +19,7 @@ MTR historical session selection and management,
 MTR SVG graphic editing, MTR session console output access
 and SVG Graphic image conversion.
 
-[Details found on the NST Wiki](http://wiki.networksecuritytoolkit.org/nstwiki/index.php/HowTo_Use_The_Scapy:_Multi-Traceroute_-_MTR)
+[Details found on the NST Wiki](https://wiki.networksecuritytoolkit.org/nstwiki/index.php/HowTo_Use_The_Scapy:_Multi-Traceroute_-_MTR)
 
 
 ## Requirements
