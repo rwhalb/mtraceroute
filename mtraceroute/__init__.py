@@ -684,7 +684,7 @@ class MTR:
             pre = ''
             if k in uepprb:		# Special Case: Separate Endpoint Target from Probe
                 pre = '_'			# when they are the same
-            eps1 = '\t"{pre:s}{ip:s}" [shape="record",color="black",gradientangle=270,fillcolor="darkgreen:green",style="filled,rounded",'.format(pre=pre, ip=k)
+            eps1 = '\t"{pre:s}{ip:s}" [shape="record",color="black",gradientangle=270,fillcolor="#00ff00:#005400",style="filled,rounded",'.format(pre=pre, ip=k)
             eps2 = 'label="Resolved Target\\n{ip:s}|{tr:s}",tooltip="MTR Resolved Target: {ip:s}"];\n'.format(ip=k, tr=tr)
             s += eps1 + eps2
         #
