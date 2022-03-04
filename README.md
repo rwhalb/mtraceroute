@@ -22,13 +22,25 @@ and SVG Graphic image conversion.
 [Details found on the NST Wiki](https://wiki.networksecuritytoolkit.org/nstwiki/index.php/HowTo_Use_The_Scapy:_Multi-Traceroute_-_MTR)
 
 
-## Requirements
-* python3: netifaces
-* python3: pygraphviz
-* python3: scapy
-* application: graphviz
+## Installation
+### Pipy
+
+```
+TODO
+pip3 install mtraceroute
+```
+
+### Manual
+
+```
+python3.9 -m venv ./venv
+source ./venv/bin/activate
+pip3 install -r requirements.txt
+python3 setup.py install
+```
 
 ## Usage ##
+
 Use the python3 control script: "mtrrt" to help facilitate the creation of a
 Multi-Traceroute (MTR) session.
 
@@ -87,7 +99,7 @@ mtrrt -t "www.google.com,www.networksecuritytoolkit.org" -r 0 --timeout 3.5 --ne
 
 ## Example Runs
 Shown are 3 use cases: A simple one, one more complex and a CIDR trace route.
- 
+
 ### Simple Run
 A single TCP trace route from private host: 10.222.222.10 to target: [www.google.com](https://www.google.com) port: https (443).
 This run creates a resultant SVG trace route graphic and packet capture in directory: "/tmp".
