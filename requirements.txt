@@ -2,7 +2,7 @@ appnope==0.1.2
 asttokens==2.0.5
 backcall==0.2.0
 cffi==1.15.0
-cryptography==36.0.1
+cryptography==39.0.1
 cycler==0.11.0
 decorator==5.1.1
 executing==0.8.3
