@@ -6,7 +6,7 @@ import mtraceroute
 
 name = 'mtraceroute'
 
-version = '1.30'
+version = '1.36.0'
 
 description = 'A python3 library for performing an enhanced scapy Multi-Traceroute (MTR) with resulting SVG visual'
 

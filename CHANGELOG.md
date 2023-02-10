@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.36.0
+------
+ * Bump cryptography from 36.0.1 to 39.0.1.
+ * Bump pillow from 9.0.1 to 9.3.0.
+
 1.34.0
 ------
 
