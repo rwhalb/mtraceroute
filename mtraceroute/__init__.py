@@ -1,5 +1,6 @@
 #-----------------------------------------------------------------------------
-#   Copyright (c) 2020, networksecuritytoolkit.org (NST). All rights reserved.
+#   Copyright (c) 2020, 2023 networksecuritytoolkit.org (NST).
+#   All rights reserved.
 #-----------------------------------------------------------------------------
 """A python3 library for performing an enhanced scapy Multi-Traceroute (MTR)"""
 """with resulting SVG visual.                                               """
@@ -1280,7 +1281,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         ip = IP(dst=[t], id=RandShort(), ttl=(minttl, maxttl))
                         icmp = ICMP(type=tid, id=id, seq=seq)
                         ipicmp = ip / icmp
-                        a, b = sr(ipicmp, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(ipicmp, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                     else:
                         if ptype == 'RandStr':
                             #
@@ -1298,7 +1299,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         icmp = ICMP(type=tid, id=id, seq=seq)
                         raw = Raw(load=pload)
                         ipicmpraw = ip  / icmp / raw
-                        a, b = sr(ipicmpraw, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(ipicmpraw, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                 elif netproto == "UDP":
                     #
                     # MTR Network Protocol: 'UDP'
@@ -1310,7 +1311,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         ip = IP(dst=[t], id=RandShort(), ttl=(minttl, maxttl))
                         udp = UDP(sport=sport, dport=dport)
                         ipudp = ip / udp
-                        a, b = sr(ipudp, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(ipudp, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                     else:
                         if ptype == 'RandStr':
                             #
@@ -1327,7 +1328,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         udp = UDP(sport=sport, dport=dport)
                         raw = Raw(load=pload)
                         ipudpraw = ip  / udp / raw
-                        a, b = sr(ipudpraw, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(ipudpraw, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                 else:
                     #
                     # Default MTR Network Protocol: 'TCP'
@@ -1347,7 +1348,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         ip = IP(dst=[t], id=RandShort(), ttl=(minttl, maxttl))
                         tcp = TCP(seq=seq, sport=sport, dport=dport, options=opts)
                         iptcp = ip  / tcp
-                        a, b = sr(iptcp, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(iptcp, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                     else:
                         if ptype == 'RandStr':
                             pload = RandString(size=32)	                 # Use a 32 byte random string
@@ -1361,7 +1362,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                         tcp = TCP(seq=seq, sport=sport, dport=dport, options=opts)
                         raw = Raw(load=pload)
                         iptcpraw = ip  / tcp / raw
-                        a, b = sr(iptcpraw, timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                        a, b = sr(iptcpraw, iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                 #
                 # Create an 'MTracerouteResult' instance for each result packets...
                 trace.append(MTracerouteResult(res=a.res))
@@ -1380,7 +1381,7 @@ def mtr(target, dport=80, minttl=1, maxttl=30, stype="Random", srcport=50000, if
                 #
                 # Run traceroute...
                 a, b = sr(IP(dst=[t], id=RandShort(), ttl=(minttl, maxttl)) / l4,
-                          timeout=timeout, filter=filter, verbose=verbose, **kargs)
+                          iface=iface, timeout=timeout, filter=filter, verbose=verbose, **kargs)
                 trace.append(MTracerouteResult(res=a.res))
                 mtrc._res.append(a)
                 mtrc._ures.append(b)
